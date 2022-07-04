@@ -10,22 +10,10 @@ resource "aws_apigatewayv2_api" "restAPI-gw" {
   }
 }
 
-resource "aws_secretsmanager_secret" "restAPI-db-creds" {
-  provider = aws.eu-central-1
-
-
-  tags = {
-    env      = "development"
-    archUUID = "1d36075c-54dd-4bf7-a797-c19d1ff008a3"
-  }
-}
-
 resource "aws_lambda_function" "restAPI-lambda-ext" {
   provider = aws.eu-central-1
 
   runtime       = "nodejs12.x"
-  role          = var.role-ext
-  handler       = var.handler-ext
   function_name = "restAPI-function-ext"
 
   tags = {
@@ -50,6 +38,26 @@ resource "aws_subnet" "restAPI-subnet" {
   }
 }
 
+resource "aws_docdb_cluster" "restAPI-documentdb" {
+  provider = aws.eu-central-1
+
+
+  tags = {
+    env      = "development"
+    archUUID = "1d36075c-54dd-4bf7-a797-c19d1ff008a3"
+  }
+}
+
+resource "aws_secretsmanager_secret" "restAPI-db-creds" {
+  provider = aws.eu-central-1
+
+
+  tags = {
+    env      = "development"
+    archUUID = "1d36075c-54dd-4bf7-a797-c19d1ff008a3"
+  }
+}
+
 resource "aws_vpc" "restAPI-vpc" {
   provider = aws.eu-central-1
 
@@ -67,19 +75,7 @@ resource "aws_lambda_function" "restAPI-lambda" {
   provider = aws.eu-central-1
 
   runtime       = "nodejs12.x"
-  role          = var.role
-  handler       = var.handler
   function_name = "restAPI-function"
-
-  tags = {
-    env      = "development"
-    archUUID = "1d36075c-54dd-4bf7-a797-c19d1ff008a3"
-  }
-}
-
-resource "aws_docdb_cluster" "restAPI-documentdb" {
-  provider = aws.eu-central-1
-
 
   tags = {
     env      = "development"
