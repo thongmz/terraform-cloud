@@ -1,0 +1,4 @@
+output "outVar" {
+  value = sdad
+}
+
